@@ -32,6 +32,8 @@ var argv = optimist
   .describe('f', 'Generate only FireLoop SDK + Auth Services')
   .describe('q', 'quiet mode - no console output (forces -w)')
   .describe('t', 'Enable Typescript default true ( React Only )')
+  .describe('em', 'Models to exclude in comma separeted e.g Post,Image')
+  .describe('im', 'Models to include in comma separeted e.g User,AuthToken')
   .default('l', 'angular2')
   .default('d', 'ng2web')
   .default('i', 'enabled')
@@ -40,7 +42,23 @@ var argv = optimist
   .default('f', 'disabled')
   .default('q', false)
   .default('t', true)
-  .alias({ u: 'url', m: 'module-name', l: 'library', i: 'io', n: 'ngrx', d: 'driver', w: 'wipe', v: 'default-values', f: 'fireloop-only', q: 'quiet', t: 'typescript' })
+  .default('em', '')
+  .default('im', '')
+  .alias({
+    u: 'url',
+    m: 'module-name',
+    l: 'library',
+    i: 'io',
+    n: 'ngrx',
+    d: 'driver',
+    w: 'wipe',
+    v: 'default-values',
+    f: 'fireloop-only',
+    q: 'quiet',
+    t: 'typescript',
+    em: 'exclude-models',
+    im: 'include-models',
+  })
   .demand(1)
   .argv;
 /**
@@ -104,7 +122,9 @@ var context = {
   defaultValue: argv['v'] || 'disabled',
   fireloopOnly: argv['f'] || 'disabled',
   quiet: argv['q'] || false,
-  isTyped: argv['t'] == 'false' ? false : true
+  isTyped: argv['t'] == 'false' ? false : true,
+  excludeModels: argv['em'] || '',
+  includeModels: argv['im'] || '',
 };
 
 if (context.quiet) {
